@@ -1,0 +1,13 @@
+ls := [nums(split(x, ' ')) : x in split(getfile("input.txt"), '\n') | x/=''];
+
+print('Part #1', #[x in ls | test(x)]);
+print('Part #2', #[x in ls | exists i in [1..#x] | test(x(1..i-1) + x(i+1..#x))]);
+
+proc nums(xs); return [val(x) : x in xs]; end;
+
+proc test(x);
+  t1 := forall i in [1..#x-1] | abs(x(i)-x(i+1)) < 4;
+  t2 := forall i in [1..#x-1] | x(i) > x(i+1);
+  t3 := forall i in [1..#x-1] | x(i) < x(i+1);
+  return t1 and (t2 or t3);
+end;

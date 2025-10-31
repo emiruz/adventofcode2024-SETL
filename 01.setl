@@ -1,0 +1,17 @@
+ls := [x: x in split(getfile("input.txt"), '\n') | x/=''];
+l1 := qsort([val(x('^[0-9]+')) : x in ls]);
+l2 := qsort([val(x('[0-9]+$')) : x in ls]);
+dd := {};
+
+(for i in [1..#l1]) dd(l2(i)) +:= 1; end;
+
+print('Part #1', +/ [abs(l1(i)-l2(i)) : i in [1..#l1]]);
+print('Part #2', +/ [x * (dd(x) ? 0) : x in l1]);
+
+proc qsort(a);
+  if #a > 1 then
+    p := a(#a div 2 + 1);
+    a := qsort([x in a | x<p]) + [x in a | x=p] + qsort([x in a | x>p]);
+  end if;
+  return a;
+end;

@@ -1,0 +1,20 @@
+d0  := getfile("input.txt");
+sep := mark(d0,'\n\n')(1) -1;
+d1  := {nums(split(x,'\\|')) : x in split(d0(1..sep),'\n')};
+d2  := {nums(split(x,',')) : x in split(d0(sep+2..),'\n')};
+
+print('Part #1', +/[x(ceil(#x/2)) : x in d2 | x/=[] and valid(x,d1)]);
+print('Part #2', +/[sort(x,d1)(ceil(#x/2)) : x in d2 | x/=[] and not valid(x,d1)]);
+
+proc nums(xs); return [val(x) : x in xs]; end;
+
+proc valid(xs,vs);
+  return not exists i in [1..#xs], j in [1..#xs] | i<j and xs(i) in vs{xs(j)};
+end;
+
+proc sort(xs,vs);
+  while exists i in [1..#xs-1] | xs(i) in vs{xs(i+1)} loop
+    [xs(i),xs(i+1)] := [xs(i+1),xs(i)];
+  end loop;
+  return xs;
+end;

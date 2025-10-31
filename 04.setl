@@ -1,0 +1,35 @@
+data := getfile("input.txt");
+cols := mark(data,'\n')(1) -1; gsub(data,'\n');
+rows := #data div cols;
+as   := {to_ij(a,cols) : [a,b] in gmark(data,'A')};
+
+print('Part #1', #(+/ [xmas(x, rows, cols, data) : x in as]));
+print('Part #2', #[x in as | mas(x, rows, cols, data)]);
+
+proc mas(x, rs, cs, d);
+  [i,j] := x;
+  ij    := [[i-1,j-1],[i-1,j+1],[i+1,j-1],[i+1,j+1]];
+  ref   := [['M','S','M','S'], ['M','M','S','S'], ['S','M','S','M'], ['S','S','M','M']];
+  return forall [a,b] in ij | and/ [a>=1,a<=rs,b>=1,b<=cs] and
+         [d(fr_ij([a,b], cs)) : [a,b] in ij] in ref;
+end;
+
+proc xmas(x, rs, cs, d);
+  [i,j] := x;
+  ij    := [[[i,j+x] : x in [-2..1]], [[i,j+x] : x in [-1..2]],
+           [[i+x,j] : x in [-2..1]], [[i+x,j] : x in [-1..2]],
+           [[i+x,j+x] : x in [-2..1]], [[i+x,j+x] : x in [-1..2]],
+	   [[i-x,j+x] : x in [-2..1]], [[i-x,j+x] : x in [-1..2]]];
+  ij    := [x in ij | forall [a,b] in x | and/ [a>=1,a<=rs,b>=1,b<=cs]];
+  ref   := [['X','M','A','S'],['S','A','M','X']];
+  return [y in ij | test(y, cs, ref, d)];
+end;
+
+proc test(ij,cs,ref,d); return [d(fr_ij([i,j],cs)) : [i,j] in ij] in ref; end;
+
+proc to_ij(x, cs);
+  j := x mod cs;
+  return [ceil(x/cs), if j=0 then cs else j end];
+end;
+
+proc fr_ij(x, cols); [i,j] := x; return (i-1)*cols+j; end;
