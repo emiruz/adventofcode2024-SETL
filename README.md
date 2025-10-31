@@ -3,7 +3,7 @@
 [SETL](https://en.wikipedia.org/wiki/SETL) is an old-school high level
 language aiming to make programming more like set theoretic notation.
 It is simple and quick to learn. [GNU SETL](https://setl.org/setl/) is
-the only active interpretation I came across. 
+the only active interpretor I came across. 
 
 SETL has powerful list comprehensions for building tuples and sets, 
 compounding operators and little else besides of surprise to a Python
