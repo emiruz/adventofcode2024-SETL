@@ -1,0 +1,16 @@
+d0 := split(getfile("input.txt"), '\n');
+n0 := [nums(x) : x in d0];
+
+print('Part #1', +/[x(1) : x in n0 | x/=[] and valid(x(1),x(3..), x(2), false)]);
+print('Part #2', +/[x(1) : x in n0 | x/=[] and valid(x(1),x(3..), x(2), true)]);
+
+proc valid(t, vs, cum, ext);
+  return if cum > t then false
+         elseif vs=[] and cum=t then true
+	 elseif vs=[] then false
+         else valid(t, vs(2..), cum+vs(1),ext) or
+	      valid(t, vs(2..), cum*vs(1),ext) or
+	      (ext and valid(t, vs(2..), val(str(cum)+str(vs(1))),ext)) end;
+end proc;
+
+proc nums(d0); return [val(d0(x(1)..x(2))) : x in gmark(d0,'[0-9]+')]; end;
