@@ -1,5 +1,4 @@
-d0 := split(getfile("input.txt"), '\n');
-n0 := [nums(x) : x in d0];
+n0 := [nums(x) : x in split(getfile("input.txt"), '\n')];
 
 print('Part #1', +/[x(1) : x in n0 | x/=[] and valid(x(1),x(3..), x(2), false)]);
 print('Part #2', +/[x(1) : x in n0 | x/=[] and valid(x(1),x(3..), x(2), true)]);
